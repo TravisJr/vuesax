@@ -68,7 +68,12 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      this.colspan = this.$parent.$refs.thead.querySelectorAll('th').length
+      if (this.$parent.$refs.thead){
+        this.colspan = this.$parent.$refs.thead.querySelectorAll('th').length
+      }
+      else {
+        this.colspan = this.$parent.$parent.$refs.thead.querySelectorAll('th').length
+      }
       if (this.$slots.expand) {
         this.colspan++
       }
@@ -89,14 +94,24 @@ export default {
       }
     },
     clicktr (evt) {
-      this.$parent.clicktr(this.data, true)
+      if(this.$parent.clicktr) {
+        this.$parent.clicktr(this.data, true)
+      }
+      else {
+        this.$parent.$parent.clicktr(this.data, true)
+      }
 
       if (this.$slots.expand) {
         this.clicktd(evt)
       }
     },
     dblclicktr () {
-      this.$parent.dblclicktr(this.data, true)
+      if (this.$parent.dblclicktr) {
+        this.$parent.dblclicktr(this.data, true)
+      }
+      else {
+        this.$parent.$parent.dblclicktr(this.data, true)
+      }
     },
     clicktd (evt) {
       if(this.$parent.multiple || !this.$slots.expand) return
